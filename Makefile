@@ -1,8 +1,8 @@
 PYTHON ?= python3
 
-.PHONY: all download build calibrate eventstudy clean
+.PHONY: all download build calibrate eventstudy placebo softsharp clean
 
-all: download build calibrate eventstudy
+all: download build calibrate eventstudy placebo softsharp
 
 download:
 	$(PYTHON) src/download.py
@@ -15,6 +15,12 @@ calibrate:
 
 eventstudy:
 	$(PYTHON) src/eventstudy.py
+
+placebo:
+	$(PYTHON) src/placebo.py
+
+softsharp:
+	$(PYTHON) src/softsharp.py
 
 clean:
 	rm -rf data/raw/* data/processed/*
