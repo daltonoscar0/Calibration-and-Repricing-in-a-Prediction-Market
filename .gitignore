@@ -4,3 +4,11 @@ data/processed/
 __pycache__/
 *.pyc
 .DS_Store
+CLAUDE.md
+AGENTS.md
+.claude/
+.agentnotes/
+.cursor/
+.mcp.json
+tasks/lessons.md
+tasks/todo.md
