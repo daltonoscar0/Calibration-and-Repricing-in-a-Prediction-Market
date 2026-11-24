@@ -1,5 +1,7 @@
 # Overround
 
+[![tests](https://github.com/daltonoscar0/Calibration-and-Repricing-in-a-Prediction-Market/actions/workflows/tests.yml/badge.svg)](https://github.com/daltonoscar0/Calibration-and-Repricing-in-a-Prediction-Market/actions/workflows/tests.yml)
+
 **Calibration and event-time repricing in the English Premier League match-odds market, 2005/06-2024/25**
 
 ## Abstract
@@ -70,7 +72,24 @@ The soft-versus-sharp backtest assumes a bettor can transact at the recorded quo
 
 ```
 pip install -r requirements.txt
-make all
+make reproduce
 ```
 
-`make all` runs download -> build -> calibrate -> eventstudy -> placebo -> softsharp, about seven minutes end to end, of which the 500-draw placebo is roughly six. Individual stages are available as targets (`make eventstudy`, `make placebo`, …). The download step fetches twenty small CSVs from football-data.co.uk into `data/raw/` and is idempotent; both `data/raw/` and `data/processed/` are gitignored, while `figures/` and `results/` are checked in. Every stage asserts its own preconditions, 380 matches per season, stripped probabilities summing to one, a plausible overround band, a minimum event window, and fails loudly rather than emitting a plausible wrong answer. Requires pandas, numpy, matplotlib and scipy only; developed on Python 3.12 and verified on 3.9.
+`make reproduce` runs download -> build -> calibrate -> eventstudy -> placebo -> softsharp, about seven minutes end to end, of which the 500-draw placebo is roughly six. Individual stages are available as targets (`make eventstudy`, `make placebo`, …). The download step fetches twenty small CSVs from football-data.co.uk into `data/raw/` and is idempotent; both `data/raw/` and `data/processed/` are gitignored, while `figures/` and `results/` are checked in. Every stage asserts its own preconditions, 380 matches per season, stripped probabilities summing to one, a plausible overround band, a minimum event window, and fails loudly rather than emitting a plausible wrong answer. Requires pandas, numpy, matplotlib and scipy only; developed on Python 3.12 and verified on 3.9.
+
+## Tests
+
+```bash
+make test
+```
+
+Unit tests for the odds-to-probability normalisation: the overround is the
+gross sum less one, proportional normalisation preserves odds ratios and is the
+identity on a fair book, Shin's (1993) adjustment falls back to proportional
+when there is no margin and otherwise shades the favourite up and the longshots
+down. Every expected value is hand-computed from the odds, as an exact fraction
+where one exists. No data required.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
