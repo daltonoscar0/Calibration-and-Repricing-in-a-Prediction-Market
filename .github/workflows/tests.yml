@@ -1,0 +1,35 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Developed on 3.12 per the README; it is also verified on 3.9.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      # Unit tests for the odds-to-probability normalisation (overround
+      # removal, proportional and Shin). These need no data.
+      - name: Run tests
+        run: make test
+
+      # `make reproduce` is NOT run here. It fetches twenty season CSVs from
+      # football-data.co.uk, and the 500-draw placebo alone takes about six
+      # minutes, so it is a local/manual command rather than a CI gate.
+      - name: Reproduction pipeline is manual (not run in CI)
+        run: echo "make reproduce - see README; needs network and ~7 min"
